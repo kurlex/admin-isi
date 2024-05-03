@@ -27,7 +27,7 @@ const InputImage = (props: any) => {
             : "imageToUpload.jpg"
         }
         alt="image-to-upload"
-        style={{ height: "300px", cursor: "pointer" }}
+        style={{ height: "300px", cursor: "pointer", ...props.style }}
         onClick={() => inputRef.current?.click()}
       />
     </Box>

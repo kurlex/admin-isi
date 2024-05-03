@@ -13,12 +13,13 @@ import IAddPost from "./IAddPost";
 
 const AddPost = () => {
   const [state, setState] = useState(0);
-  const { user } = useAuth();
+  const { user, refreshPosts } = useAuth();
   const form = useForm<IAddPost>({
     onValidSubmit: (values) => {
       setState(1);
       UploadPost(user, values).then((result) => {
         setState(result ? 2 : 3);
+        if (result) refreshPosts();
       });
     },
   });

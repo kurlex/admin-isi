@@ -5,10 +5,9 @@
   margin: 5px;
 }
 .left-dashboard {
-  flex: 70%;
+  flex: 30%;
   background-color: rgb(238, 238, 238);
 }
 .right-dashboard {
   flex: 30%;
-  background-color: rgb(238, 238, 238);
 }

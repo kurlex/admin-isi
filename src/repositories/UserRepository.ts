@@ -1,10 +1,18 @@
 import { db, storage } from "../config/Firebase";
-import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore"; // Import necessary functions
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+} from "firebase/firestore"; // Import necessary functions
 import LocalUser from "./LocalUser";
 import Category from "./Category";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import IAddPost from "../components/addPost/IAddPost";
 import IAddCategory from "../components/addCategory/IAddCategory";
+import Post from "../components/ListPost/Post";
 
 export const GetUser = async (uid: string) => {
   try {
@@ -25,6 +33,17 @@ export const GetCategories = async (): Promise<Category[]> => {
     querySnapshot.forEach((doc) =>
       result.push(new Category(doc.id, doc.data()))
     );
+    return result;
+  } catch {
+    return [];
+  }
+};
+
+export const GetPosts = async (): Promise<Post[]> => {
+  try {
+    const querySnapshot = await getDocs(collection(db, "Articles"));
+    let result: Post[] = [];
+    querySnapshot.forEach((doc) => result.push(new Post(doc.id, doc.data())));
     return result;
   } catch {
     return [];
@@ -54,7 +73,7 @@ export const UploadPost = async (
     const categories = user.categories.filter(
       (category) => category.name === post.Category
     );
-    if (categories.length === 0) return false;
+    if (categories.length !== 1) return false;
     const categoryUid = categories[0].uid;
     const publishedAt = new Date().toISOString();
     let UrlToImage = await UploadImage(post.Image);
@@ -74,14 +93,21 @@ export const UploadPost = async (
 };
 
 export const UploadCategory = async (
-  category: IAddCategory
+  user: LocalUser | null,
+  categoryToAdd: IAddCategory
 ): Promise<boolean> => {
   try {
     const articlesRef = collection(db, "Categories");
-    let UrlToImage = await UploadImage(category.Image);
+    if (
+      !user ||
+      user.categories.some((category) => category.name === categoryToAdd.Name)
+    )
+      return false;
+
+    let UrlToImage = await UploadImage(categoryToAdd.Image);
     if (!UrlToImage) return false;
     await setDoc(doc(articlesRef), {
-      name: category.Name,
+      name: categoryToAdd.Name,
       image: UrlToImage,
     });
     return true;
@@ -90,3 +116,30 @@ export const UploadCategory = async (
     return false;
   }
 };
+
+const RemoveDocument = async (collectionName: string, documentId: string) => {
+  try {
+    const documentRef = doc(db, collectionName, documentId);
+    await deleteDoc(documentRef);
+    return true;
+  } catch (error) {
+    console.error("Error removing document:", error);
+    return false;
+  }
+};
+
+export const DeleteCategory = async (
+  user: LocalUser | null,
+  categoryToRemove: string
+) => {
+  if (!user) return false;
+  const categories = user.categories.filter(
+    (category) => category.name === categoryToRemove
+  );
+  if (categories.length === 0) return false;
+  const categoryUid = categories[0].uid;
+  return await RemoveDocument("Categories", categoryUid);
+};
+
+export const RemovePost = (postId: string) =>
+  RemoveDocument("Articles", postId);

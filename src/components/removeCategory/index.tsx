@@ -1,21 +1,22 @@
 import { Formiz, useForm } from "@formiz/core";
-import { useState } from "react";
-import LoadingCircle from "../LoadingCircle";
-import Input from "../form/Input";
-import InputImage from "../form/ImageInput";
-import { Box } from "@mui/material";
-import Validators from "../form/Validators";
-import { UploadCategory } from "../../repositories/UserRepository";
-import IAddCategory from "./IAddCategory";
+import Select from "../form/Select";
 import { useAuth } from "../../contexts/AuthContext";
+import { Box } from "@mui/material";
+import LoadingCircle from "../LoadingCircle";
+import { useState } from "react";
+import { DeleteCategory } from "../../repositories/UserRepository";
 
-const AddCategory = () => {
+interface IRemoveCategory {
+  Category: string;
+}
+
+const RemoveCategory = () => {
   const [state, setState] = useState(0);
   const { user, refreshCategories } = useAuth();
-  const form = useForm<IAddCategory>({
+  const form = useForm<IRemoveCategory>({
     onValidSubmit: (values) => {
       setState(1);
-      UploadCategory(user, values).then((result) => {
+      DeleteCategory(user, values.Category).then((result) => {
         setState(result ? 2 : 3);
         if (result) refreshCategories();
       });
@@ -23,34 +24,33 @@ const AddCategory = () => {
   });
   return (
     <>
-      <h2 style={{ textAlign: "center" }}>Add Category</h2>
+      <h2>Remove Category</h2>
       {state === 1 && <LoadingCircle height="100vh" />}
       {state !== 1 && (
         <Formiz connect={form} autoForm>
           {state === 2 && (
             <p className="form-error-feedback green text-center">
-              Category added!
+              Category Removed!
             </p>
           )}
           {state === 3 && (
             <p className="form-error-feedback text-center">
-              Unable to added the category
+              Unable to remove the category
             </p>
           )}
-          <InputImage name="Image" required style={{ height: "100px" }} />
-          <Input
+          <Select
             className="add-post-select"
-            name="Name"
-            label="Name"
+            name="Category"
+            label="Category"
             required
-            validations={[Validators.alphabetic, Validators.maxLength(20)]}
+            itemsList={user!.categories}
           />
           <Box sx={{ textAlign: "center" }}>
             <button
               className={`action-button ${!form.isValid && "disabled"}`}
               type="submit"
             >
-              Save
+              Remove
             </button>
           </Box>
         </Formiz>
@@ -59,4 +59,4 @@ const AddCategory = () => {
   );
 };
 
-export default AddCategory;
+export default RemoveCategory;

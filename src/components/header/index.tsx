@@ -7,17 +7,6 @@ const Header = () => {
       <div className="left">
         <img className="logo-isi" src="isi.png" alt="logo-isi" />
       </div>
-      <div className="center">
-        <a href="/dashboard" className="nav-btn">
-          Dashboard
-        </a>
-        <a href="#" className="nav-btn">
-          About
-        </a>
-        <a href="#" className="nav-btn">
-          Services
-        </a>
-      </div>
       <div className="right">
         <button className="logout-btn" onClick={SignOut}>
           <img src="logoutIcon.png" alt="logout-icon" />
