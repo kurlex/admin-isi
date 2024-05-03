@@ -1,0 +1,16 @@
+.add-post-select {
+  width: 100%;
+  height: 30px;
+  resize: none;
+}
+
+.add-post-textarea {
+  height: 100px !important;
+}
+
+.green {
+  color: rgb(27, 184, 27) !important ;
+}
+.text-center {
+  text-align: center;
+}

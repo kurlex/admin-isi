@@ -1,7 +1,7 @@
-import { User } from "firebase/auth";
+import LocalUser from "../repositories/LocalUser";
 
 interface IAuthContext {
-  user: User | null;
+  user: LocalUser | null;
   isLoading: boolean;
 }
 

@@ -1,0 +1,39 @@
+.login-container {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 100vh; /* Make the container take up the full viewport height */
+  text-align: center;
+}
+
+.login-container > form {
+  background-color: rgb(243, 243, 243);
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.action-button {
+  padding: 10px 20px;
+  color: white;
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: rgb(64, 64, 238);
+  margin: 5px;
+  margin-top: 25px;
+}
+
+.action-button:hover {
+  background-color: rgb(103, 103, 255);
+}
+
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  user-select: none;
+}

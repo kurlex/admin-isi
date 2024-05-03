@@ -1,0 +1,48 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #333;
+  color: #fff;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+}
+
+.center {
+  flex: 1;
+  text-align: center;
+}
+
+.right {
+  display: flex;
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.logout-btn img {
+  width: 24px;
+  height: 24px;
+}
+
+.nav-btn {
+  margin-left: 20px;
+  color: #fff;
+  text-decoration: none;
+}
+
+/* Style for hover effect on navigation buttons */
+.nav-btn:hover {
+  text-decoration: underline;
+}
+
+.logo-isi {
+  max-height: 50px;
+}
