@@ -22,9 +22,7 @@ const InputImage = (props: any) => {
       />
       <img
         src={
-          selectedImage
-            ? URL.createObjectURL(selectedImage)
-            : "imageToUpload.jpg"
+          selectedImage ? URL.createObjectURL(selectedImage) : "addImage.png"
         }
         alt="image-to-upload"
         style={{ height: "300px", cursor: "pointer", ...props.style }}
